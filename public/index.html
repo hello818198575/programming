@@ -1,30 +1,203 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progateクローン - Codespaces学習</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', -apple-system, sans-serif; height: 100vh; background: #f5f7fa; }
+    
+    /* Progate風ヘッダー */
+    #header {
+      position: sticky; top: 0; height: 60px; background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white; padding: 0 24px; display: flex; align-items: center; z-index: 100;
+      box-shadow: 0 4px 12px rgba(99,102,241,0.3);
+    }
+    #logo { font-size: 24px; font-weight: bold; margin-right: auto; }
+    #user-info { font-size: 14px; }
+    #logout { background: rgba(255,255,255,0.2); color: white; padding: 8px 16px; border: none; border-radius: 20px; cursor: pointer; margin-left: 16px; }
+    
+    /* メイン */
+    #main { display: flex; height: calc(100vh - 60px); }
+    
+    /* 左ナビ（Progateコース一覧） */
+    #sidebar { width: 280px; background: white; box-shadow: 2px 0 12px rgba(0,0,0,0.08); overflow-y: auto; }
+    .course-card { padding: 20px; border-bottom: 1px solid #f1f5f9; cursor: pointer; transition: all 0.3s; }
+    .course-card:hover { background: #f8fafc; }
+    .course-card.active { background: linear-gradient(90deg, #6366f1, #8b5cf6); color: white; }
+    .course-title { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+    .course-progress { font-size: 14px; opacity: 0.8; }
+    
+    /* 中央メイン（Progateスライド+エディタ） */
+    #main-content { flex: 1; display: flex; flex-direction: column; }
+    #slide-area { flex: 1; padding: 32px; background: white; overflow-y: auto; }
+    .progate-slide {
+      max-width: 800px; margin: 0 auto; background: #fff; border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12); padding: 40px;
+    }
+    .slide-step { margin-bottom: 32px; opacity: 0; transform: translateY(20px); animation: slideIn 0.6s forwards; }
+    @keyframes slideIn { to { opacity: 1; transform: translateY(0); } }
+    .slide-illustration { font-size: 48px; margin-bottom: 20px; }
+    .slide-code { background: #1e293b; color: #f8fafc; padding: 20px; border-radius: 12px; font-family: monospace; margin: 16px 0; }
+    .slide-text { line-height: 1.7; color: #334155; font-size: 16px; }
+    
+    #editor-area { padding: 24px 32px 32px; background: #f8fafc; border-top: 1px solid #e2e8f0; }
+    #code-editor {
+      width: 100%; height: 200px; padding: 20px; border: 2px solid #e2e8f0;
+      border-radius: 12px; font-family: 'Fira Code', monospace; font-size: 15px;
+      resize: vertical; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .editor-buttons { margin-top: 16px; text-align: center; }
+    .btn-progate {
+      padding: 12px 28px; background: linear-gradient(135deg, #10b981, #059669);
+      color: white; border: none; border-radius: 25px; font-size: 15px; cursor: pointer;
+      margin: 0 8px; box-shadow: 0 4px 12px rgba(16,185,129,0.4); transition: all 0.3s;
+    }
+    .btn-progate:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(16,185,129,0.5); }
+    
+    /* 右ヒント（Progate風） */
+    #hint-panel { width: 320px; background: #fff; box-shadow: -2px 0 12px rgba(0,0,0,0.08); overflow-y: auto; }
+    .hint-section { padding: 24px; border-bottom: 1px solid #f1f5f9; }
+    .hint-title { font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 16px; }
+    .progress-bar { height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; margin: 12px 0; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, #10b981, #059669); transition: width 0.5s; border-radius: 4px; }
+    .hint-item { padding: 12px; background: #f8fafc; border-radius: 8px; margin-bottom: 12px; font-size: 14px; }
+    
+    /* レスポンシブ */
+    @media (max-width: 1200px) { #sidebar, #hint-panel { width: 240px; } }
+  </style>
+</head>
 <body>
-  <form id="register">
-    <input id="reg-username" placeholder="Username">
-    <input id="reg-password" type="password" placeholder="Password">
-    <button type="submit">Register</button>
-  </form>
-  <form id="login">
-    <input id="login-username" placeholder="Username">
-    <input id="login-password" type="password" placeholder="Password">
-    <button type="submit">Login</button>
-  </form>
+  <div id="header">
+    <div id="logo">🎯 Progateクローン</div>
+    <div id="user-info">ユーザー名 <span id="progress-total">0%</span></div>
+    <button id="logout">ログアウト</button>
+  </div>
+  
+  <div id="main" style="display:none;">
+    <!-- 左: コース -->
+    <div id="sidebar">
+      <div class="course-card active" data-course="1">
+        <div class="course-title">🌐 Web基礎</div>
+        <div class="course-progress">進捗: <span id="course1-progress">25%</span></div>
+      </div>
+      <div class="course-card" data-course="2">
+        <div class="course-title">⚡ JavaScript</div>
+        <div class="course-progress">進捗: <span id="course2-progress">0%</span></div>
+      </div>
+      <div class="course-card" data-course="3">
+        <div class="course-title">🎨 jQuery</div>
+        <div class="course-progress">進捗: <span id="course3-progress">0%</span></div>
+      </div>
+    </div>
+    
+    <!-- 中央: スライド+エディタ -->
+    <div id="main-content">
+      <div id="slide-area">
+        <div class="progate-slide">
+          <div class="slide-step" style="animation-delay: 0.1s;">
+            <div class="slide-illustration">📱</div>
+            <h2>Webページの最初のステップ</h2>
+            <p class="slide-text">HTMLで「Hello World」を表示してみましょう！</p>
+          </div>
+          <div class="slide-step" style="animation-delay: 0.3s;">
+            <div class="slide-code">&lt;h1&gt;Hello World&lt;/h1&gt;</div>
+            <p class="slide-text">このコードを下のエディタにコピーして、▶️実行ボタンを押してみて！</p>
+          </div>
+        </div>
+      </div>
+      <div id="editor-area">
+        <textarea id="code-editor" placeholder="-- ここにHTML/CSS/JavaScript/jQueryを書いて実行 --&#10;&lt;!DOCTYPE html&gt;&#10;&lt;html&gt;&#10;&lt;body&gt;&#10;  &lt;h1&gt;Hello World&lt;/h1&gt;&#10;&lt;/body&gt;&#10;&lt;/html&gt;">&lt;h1&gt;Hello World&lt;/h1&gt;</textarea>
+        <div class="editor-buttons">
+          <button class="btn-progate" id="run-code">▶️ 実行</button>
+          <button class="btn-progate" id="next-slide">➡️ 次へ</button>
+          <button class="btn-progate" id="save-progress">💾 保存</button>
+        </div>
+        <iframe id="preview-frame" style="width:100%;height:300px;border:none;background:#fff;margin-top:16px;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.1);"></iframe>
+      </div>
+    </div>
+    
+    <!-- 右: ヒント・進捗 -->
+    <div id="hint-panel">
+      <div class="hint-section">
+        <div class="hint-title">📊 学習進捗</div>
+        <div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div>
+        <div>1/8 ステップ完了</div>
+      </div>
+      <div class="hint-section">
+        <div class="hint-title">💡 ヒント</div>
+        <div class="hint-item">• &lt;h1&gt;〜&lt;/h1&gt; で大きな見出し</div>
+        <div class="hint-item">• &lt;p&gt;〜&lt;/p&gt; で段落</div>
+        <div class="hint-item">• 実行ボタンで即時確認！</div>
+      </div>
+      <div class="hint-section">
+        <div class="hint-title">🎖️ 実績</div>
+        <div class="hint-item" style="color:#10b981;">✅ 初HTMLクリア</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ログイン（簡略版） -->
+  <div id="login-overlay" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:200;display:none;">
+    <div style="background:white;padding:40px;border-radius:16px;width:320px;">
+      <h3 style="margin-bottom:24px;">ログイン</h3>
+      <input id="quick-username" style="width:100%;padding:12px;margin-bottom:12px;border:1px solid #e2e8f0;border-radius:8px;" placeholder="ユーザー名">
+      <input id="quick-password" type="password" style="width:100%;padding:12px;margin-bottom:16px;border:1px solid #e2e8f0;border-radius:8px;" placeholder="パスワード">
+      <button onclick="quickLogin()" style="width:100%;padding:12px;background:#6366f1;color:white;border:none;border-radius:8px;cursor:pointer;">ログイン</button>
+    </div>
+  </div>
+
   <script>
-    document.getElementById('register').addEventListener('submit', async e => {
-      e.preventDefault();
-      const res = await fetch('/register', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          username: document.getElementById('reg-username').value,
-          password: document.getElementById('reg-password').value
-        })
-      });
-      console.log(await res.json());
+    // クイックログイン（デモ用）
+    function quickLogin() {
+      const user = $('#quick-username').val() || 'guest';
+      $('#user-info').html(`${user} <span id="progress-total">25%</span>`);
+      $('#login-overlay').hide();
+      $('#main').show();
+    }
+    
+    // コース選択
+    $('.course-card').click(function() {
+      $('.course-card').removeClass('active');
+      $(this).addClass('active');
     });
-    // loginフォームも同様
+    
+    // コード実行（Progate風リアルタイム）
+    $('#run-code').click(updatePreview);
+    $('#code-editor').on('input', function() {
+      if (this.value.length > 10) updatePreview();
+    });
+    
+    function updatePreview() {
+      const code = $('#code-editor').val();
+      $('#preview-frame').contents().find('body').html(code || '<h2 style="color:#94a3b8;margin:40px;">コードを実行！</h2>');
+    }
+    
+    // スライド進行
+    let slideIndex = 0;
+    $('#next-slide').click(() => {
+      slideIndex++;
+      $('.slide-step').css('opacity', '0.5');
+      $($('.slide-step')[slideIndex % $('.slide-step').length]).css('opacity', '1');
+      $('.progress-fill').css('width', `${Math.min(100, 25 + slideIndex * 10)}%`);
+      $('#progress-total').text(`${Math.min(100, 25 + slideIndex * 10)}%`);
+    });
+    
+    // 保存
+    $('#save-progress').click(() => {
+      localStorage.setItem('progate-clone-progress', slideIndex);
+      alert('💾 進捗保存完了！（localStorage）');
+    });
+    
+    // ログアウト
+    $('#logout').click(() => {
+      $('#login-overlay').show();
+    });
+    
+    // 初期プレビュー
+    updatePreview();
   </script>
 </body>
 </html>

@@ -3,6 +3,15 @@ const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const db = require('./db');
 const app = express();
+const session = require('express-session');
+app.use(session({
+  secret: 'your-secret-key',  // 本番では環境変数に
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 24 * 60 * 60 * 1000 }  // 1日
+}));
+
+
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
@@ -24,6 +33,25 @@ app.post('/login', (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
     res.json({ message: 'Login success', userId: user.id });
+  });
+});
+
+
+function requireLogin(req, res, next) {
+  if (!req.session.userId) return res.status(401).json({ error: 'Login required' });
+  next();
+}
+
+
+app.get('/courses', requireLogin, (req, res) => {
+  db.all('SELECT * FROM courses', (err, courses) => {
+    res.json(courses);
+  });
+});
+
+app.get('/chapters/:courseId', requireLogin, (req, res) => {
+  db.all('SELECT * FROM chapters WHERE course_id = ?', [req.params.courseId], (err, chapters) => {
+    res.json(chapters);
   });
 });
 
