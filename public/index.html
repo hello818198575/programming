@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Progateクローン v2.0</title>
+  <title>Progateクローン v3.0</title>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <style>
     * {
@@ -14,9 +14,9 @@
 
     :root {
       --header-h: 60px;
-      --sidebar-w: 280px;
-      --right-w: 320px;
-      --bg: #f5f7fb;
+      --sidebar-w: 260px;
+      --right-w: 310px;
+      --bg: #f4f7fb;
       --card: #ffffff;
       --line: #e5e7eb;
       --primary: #6366f1;
@@ -29,10 +29,10 @@
 
     html, body {
       height: 100%;
+      overflow: hidden;
+      font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg);
       color: var(--text);
-      font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
-      overflow: hidden;
     }
 
     #header {
@@ -40,20 +40,18 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 20px;
+      padding: 0 18px;
       background: linear-gradient(135deg, var(--primary), var(--primary2));
       color: #fff;
-      box-shadow: 0 4px 16px rgba(99, 102, 241, 0.24);
-      z-index: 50;
-      position: relative;
+      box-shadow: 0 4px 18px rgba(99, 102, 241, 0.25);
     }
 
     #logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
       font-size: 22px;
-      font-weight: 700;
+      font-weight: 800;
+      display: flex;
+      gap: 10px;
+      align-items: center;
       white-space: nowrap;
     }
 
@@ -61,18 +59,18 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      font-size: 14px;
       white-space: nowrap;
+      font-size: 14px;
     }
 
     #logout {
-      border: none;
-      background: rgba(255,255,255,0.18);
+      border: 0;
+      background: rgba(255,255,255,.18);
       color: #fff;
-      padding: 10px 16px;
-      border-radius: 18px;
+      padding: 10px 14px;
+      border-radius: 999px;
       cursor: pointer;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     #app {
@@ -90,10 +88,9 @@
     }
 
     .course-card {
-      padding: 20px 18px;
+      padding: 18px 16px;
       border-bottom: 1px solid #f1f5f9;
       cursor: pointer;
-      transition: 0.2s;
     }
 
     .course-card:hover {
@@ -106,8 +103,8 @@
     }
 
     .course-title {
-      font-size: 17px;
-      font-weight: 700;
+      font-size: 16px;
+      font-weight: 800;
       margin-bottom: 8px;
     }
 
@@ -116,13 +113,12 @@
       align-items: center;
       gap: 8px;
       font-size: 13px;
-      opacity: 0.9;
     }
 
     .dot {
       width: 8px;
       height: 8px;
-      border-radius: 50%;
+      border-radius: 999px;
       background: var(--green);
       flex-shrink: 0;
     }
@@ -135,22 +131,61 @@
       overflow: hidden;
     }
 
-    #slide-area {
+    #tabs {
+      height: 50px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 16px;
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+      flex-shrink: 0;
+    }
+
+    .tab {
+      border: 1px solid transparent;
+      background: #f8fafc;
+      color: #334155;
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .tab.active {
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(99, 102, 241, .22);
+    }
+
+    #content-wrap {
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .view {
+      display: none;
       flex: 1;
       min-height: 0;
       overflow: auto;
-      padding: 18px 20px 10px;
+      padding: 18px;
     }
 
-    .slide-card {
-      max-width: 900px;
+    .view.active {
+      display: block;
+    }
+
+    .card {
+      max-width: 920px;
       margin: 0 auto;
       background: #fff;
       border-radius: 18px;
-      box-shadow: 0 10px 34px rgba(15, 23, 42, 0.08);
-      border: 1px solid rgba(229, 231, 235, 0.8);
-      padding: 28px 30px;
-      min-height: 300px;
+      border: 1px solid rgba(229,231,235,.9);
+      box-shadow: 0 10px 34px rgba(15,23,42,.08);
+      padding: 26px;
     }
 
     .slide-top {
@@ -162,29 +197,28 @@
 
     .slide-icon {
       font-size: 44px;
-      line-height: 1;
       flex-shrink: 0;
     }
 
     .slide-title {
       font-size: 24px;
-      font-weight: 800;
+      font-weight: 900;
       margin-bottom: 8px;
     }
 
     .slide-text {
-      font-size: 16px;
       line-height: 1.8;
       color: #334155;
+      font-size: 16px;
     }
 
     .slide-code {
       margin-top: 18px;
       background: #0f172a;
       color: #e2e8f0;
-      padding: 18px;
+      padding: 16px;
       border-radius: 14px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       white-space: pre-wrap;
       line-height: 1.7;
       overflow-x: auto;
@@ -195,34 +229,27 @@
       background: linear-gradient(135deg, #ecfdf5, #d1fae5);
       border-left: 5px solid var(--green);
       border-radius: 14px;
-      padding: 16px 18px;
-      line-height: 1.7;
-    }
-
-    #editor-area {
-      border-top: 1px solid var(--line);
-      background: #f8fafc;
-      padding: 16px 20px 18px;
-      flex-shrink: 0;
+      padding: 14px 16px;
+      line-height: 1.8;
     }
 
     #code-editor {
       width: 100%;
-      height: 160px;
+      height: 220px;
       resize: vertical;
-      border-radius: 14px;
       border: 1px solid #dbe2ea;
+      border-radius: 14px;
       padding: 16px;
       font-size: 15px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
       line-height: 1.6;
-      outline: none;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       background: #fff;
+      outline: none;
     }
 
     #code-editor:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+      box-shadow: 0 0 0 3px rgba(99,102,241,.12);
     }
 
     .buttons {
@@ -230,43 +257,61 @@
       flex-wrap: wrap;
       gap: 10px;
       margin-top: 12px;
+      margin-bottom: 14px;
     }
 
     .btn {
-      border: none;
+      border: 0;
       border-radius: 999px;
-      padding: 12px 18px;
-      font-weight: 700;
+      padding: 12px 16px;
+      font-weight: 800;
       cursor: pointer;
       color: #fff;
       background: linear-gradient(135deg, var(--green), var(--green2));
-      box-shadow: 0 8px 18px rgba(16, 185, 129, 0.28);
+      box-shadow: 0 8px 18px rgba(16,185,129,.24);
     }
 
     .btn.secondary {
       background: linear-gradient(135deg, #60a5fa, #2563eb);
-      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.24);
     }
 
     .btn.gray {
       background: linear-gradient(135deg, #94a3b8, #64748b);
-      box-shadow: 0 8px 18px rgba(100, 116, 139, 0.22);
     }
 
     .btn:disabled {
-      opacity: 0.55;
+      opacity: .55;
       cursor: not-allowed;
       box-shadow: none;
     }
 
     #preview-frame {
       width: 100%;
-      height: 260px;
-      border: none;
+      height: 320px;
+      border: 0;
       border-radius: 16px;
-      margin-top: 14px;
       background: #fff;
-      box-shadow: 0 8px 26px rgba(15, 23, 42, 0.10);
+      box-shadow: 0 8px 26px rgba(15,23,42,.10);
+    }
+
+    .terminal {
+      background: #0b1220;
+      color: #d1d5db;
+      border-radius: 16px;
+      padding: 16px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      min-height: 420px;
+      box-shadow: 0 10px 34px rgba(15,23,42,.12);
+      white-space: pre-wrap;
+      line-height: 1.8;
+    }
+
+    .terminal-line {
+      margin-bottom: 8px;
+    }
+
+    .terminal-prompt {
+      color: #4ade80;
     }
 
     #right {
@@ -278,23 +323,23 @@
     }
 
     .panel {
-      padding: 22px 18px;
+      padding: 20px 16px;
       border-bottom: 1px solid #f1f5f9;
     }
 
     .panel h3 {
       font-size: 18px;
-      margin-bottom: 14px;
       display: flex;
-      align-items: center;
       gap: 8px;
+      align-items: center;
+      margin-bottom: 14px;
     }
 
     .progress-bar {
       width: 100%;
       height: 10px;
-      background: #e5e7eb;
       border-radius: 999px;
+      background: #e5e7eb;
       overflow: hidden;
       margin: 12px 0 10px;
     }
@@ -303,27 +348,33 @@
       width: 0%;
       height: 100%;
       background: linear-gradient(90deg, var(--green), #34d399);
-      border-radius: 999px;
-      transition: width 0.35s ease;
+      transition: width .25s ease;
     }
 
     .hint-box {
       background: linear-gradient(135deg, #ecfdf5, #dcfce7);
       border-left: 4px solid var(--green);
       border-radius: 14px;
-      padding: 14px 16px;
+      padding: 14px;
       line-height: 1.8;
     }
 
     .badge {
       display: inline-block;
       margin-top: 10px;
-      padding: 8px 14px;
+      padding: 8px 12px;
       border-radius: 999px;
-      background: linear-gradient(135deg, #2563eb, #3b82f6);
       color: #fff;
-      font-weight: 700;
-      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.24);
+      font-weight: 800;
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
+    }
+
+    #overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,.45);
+      display: none;
+      z-index: 90;
     }
 
     #result-popup {
@@ -331,22 +382,17 @@
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
-      z-index: 100;
       width: min(520px, 92vw);
       background: #fff;
       border-radius: 20px;
-      box-shadow: 0 24px 70px rgba(0,0,0,0.24);
+      box-shadow: 0 24px 70px rgba(0,0,0,.24);
       display: none;
-      padding: 28px;
+      z-index: 100;
+      padding: 26px;
     }
 
-    #result-popup.success {
-      border: 2px solid #34d399;
-    }
-
-    #result-popup.error {
-      border: 2px solid #f87171;
-    }
+    #result-popup.success { border: 2px solid #34d399; }
+    #result-popup.error { border: 2px solid #f87171; }
 
     #result-icon {
       font-size: 54px;
@@ -355,57 +401,21 @@
 
     #result-diff {
       margin-top: 14px;
-      padding: 14px;
-      border-radius: 12px;
       background: #fef2f2;
       color: #991b1b;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      padding: 14px;
+      border-radius: 12px;
       white-space: pre-wrap;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       max-height: 220px;
       overflow: auto;
       text-align: left;
-    }
-
-    #overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(15,23,42,0.45);
-      display: none;
-      z-index: 90;
-    }
-
-    @media (max-width: 1200px) {
-      :root {
-        --sidebar-w: 240px;
-        --right-w: 280px;
-      }
-      .slide-card {
-        padding: 22px;
-      }
-    }
-
-    @media (max-width: 960px) {
-      body {
-        overflow: auto;
-      }
-      #app {
-        height: auto;
-        min-height: calc(100vh - var(--header-h));
-        flex-direction: column;
-      }
-      #sidebar, #right {
-        width: 100%;
-        height: auto;
-      }
-      #center {
-        min-height: 0;
-      }
     }
   </style>
 </head>
 <body>
   <div id="header">
-    <div id="logo">🎯 Progateクローン v2.0</div>
+    <div id="logo">🎯 Progateクローン v3.0</div>
     <div id="header-right">
       <div id="user-name">Guest</div>
       <div id="header-percent">0%</div>
@@ -419,57 +429,71 @@
     <div id="sidebar">
       <div class="course-card active" data-chapter="1">
         <div class="course-title">🌐 HTML基礎</div>
-        <div class="course-progress"><span class="dot"></span><span>3/3 スライド (100%)</span></div>
+        <div class="course-progress"><span class="dot"></span><span>3/3 スライド</span></div>
       </div>
       <div class="course-card" data-chapter="2">
         <div class="course-title">🎨 CSS入門</div>
-        <div class="course-progress"><span class="dot" style="opacity:.3;background:#94a3b8;"></span><span>0/3 スライド (0%)</span></div>
+        <div class="course-progress"><span class="dot" style="opacity:.3;background:#94a3b8;"></span><span>0/3 スライド</span></div>
       </div>
       <div class="course-card" data-chapter="3">
         <div class="course-title">⚡ JavaScript</div>
-        <div class="course-progress"><span class="dot" style="opacity:.3;background:#94a3b8;"></span><span>0/3 スライド (0%)</span></div>
-      </div>
-      <div class="course-card" data-chapter="4">
-        <div class="course-title">🧩 jQuery</div>
-        <div class="course-progress"><span class="dot" style="opacity:.3;background:#94a3b8;"></span><span>0/3 スライド (0%)</span></div>
+        <div class="course-progress"><span class="dot" style="opacity:.3;background:#94a3b8;"></span><span>0/3 スライド</span></div>
       </div>
     </div>
 
     <div id="center">
-      <div id="slide-area">
-        <div class="slide-card" id="slide-card">
-          <div class="slide-top">
-            <div class="slide-icon" id="slide-icon">📘</div>
-            <div>
-              <div class="slide-title" id="slide-title">読み込み中...</div>
-              <div class="slide-text" id="slide-text">スライドを表示しています。</div>
-            </div>
-          </div>
-          <div class="slide-code" id="slide-code"></div>
-          <div class="challenge-box" id="challenge-box"></div>
-        </div>
+      <div id="tabs">
+        <button class="tab active" data-tab="slide">スライド</button>
+        <button class="tab" data-tab="code">コード</button>
+        <button class="tab" data-tab="preview">プレビュー</button>
+        <button class="tab" data-tab="terminal">ターミナル</button>
       </div>
 
-      <div id="editor-area">
-        <textarea id="code-editor" placeholder="ここにコードを書いてください"></textarea>
-
-        <div class="buttons">
-          <button class="btn" id="run-code">✅ 実行・採点</button>
-          <button class="btn secondary" id="next-slide" disabled>➡️ 次へ進む</button>
-          <button class="btn gray" id="show-answer">💡 正解表示</button>
-          <button class="btn gray" id="save-progress">💾 自動保存</button>
+      <div id="content-wrap">
+        <div class="view active" id="view-slide">
+          <div class="card">
+            <div class="slide-top">
+              <div class="slide-icon" id="slide-icon">📘</div>
+              <div>
+                <div class="slide-title" id="slide-title">読み込み中...</div>
+                <div class="slide-text" id="slide-text"></div>
+              </div>
+            </div>
+            <div class="slide-code" id="slide-code"></div>
+            <div class="challenge-box" id="challenge-box"></div>
+          </div>
         </div>
 
-        <iframe id="preview-frame"></iframe>
+        <div class="view" id="view-code">
+          <div class="card">
+            <textarea id="code-editor" placeholder="ここにコードを書いてください"></textarea>
+            <div class="buttons">
+              <button class="btn" id="run-code">✅ 実行・採点</button>
+              <button class="btn secondary" id="next-slide" disabled>➡️ 次へ進む</button>
+              <button class="btn gray" id="show-answer">💡 正解表示</button>
+              <button class="btn gray" id="save-progress">💾 自動保存</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="view" id="view-preview">
+          <div class="card">
+            <iframe id="preview-frame"></iframe>
+          </div>
+        </div>
+
+        <div class="view" id="view-terminal">
+          <div class="card">
+            <div class="terminal" id="terminal-output"></div>
+          </div>
+        </div>
       </div>
     </div>
 
     <div id="right">
       <div class="panel">
         <h3>📊 進捗</h3>
-        <div class="progress-bar">
-          <div class="progress-fill" id="main-progress"></div>
-        </div>
+        <div class="progress-bar"><div class="progress-fill" id="main-progress"></div></div>
         <div id="step-counter">ステップ 1/3</div>
         <div class="badge" id="score-display">スコア: 0</div>
       </div>
@@ -500,16 +524,14 @@
   <script>
     const chapters = {
       1: {
-        title: "HTML基礎",
         slides: [
           {
             icon: "📘",
             title: "見出しを作る",
-            text: "下のエディタに正確にコードを書いて、実行・採点を押してください。",
+            text: "スライドを読んで、コードを正確に入力してください。",
             code: "<h1>Hello World</h1>",
             hint: "・h1タグを使う\n・文字は Hello World\n・余計な空白を入れない",
-            answer: "<h1>Hello World</h1>",
-            sample: "<h1>Hello World</h1>"
+            answer: "<h1>Hello World</h1>"
           },
           {
             icon: "✍️",
@@ -517,8 +539,7 @@
             text: "見出しの下に段落を追加します。",
             code: "<h1>Hello World</h1><p>First step!</p>",
             hint: "・h1はそのまま\n・pタグで段落を追加\n・文字を正確に書く",
-            answer: "<h1>Hello World</h1><p>First step!</p>",
-            sample: "<h1>Hello World</h1><p>First step!</p>"
+            answer: "<h1>Hello World</h1><p>First step!</p>"
           },
           {
             icon: "🎨",
@@ -526,8 +547,7 @@
             text: "順序付きリストを作ります。",
             code: "<h1>Menu</h1><ol><li>Item1</li><li>Item2</li></ol>",
             hint: "・olタグを使う\n・liを2つ書く\n・タグを正しく閉じる",
-            answer: "<h1>Menu</h1><ol><li>Item1</li><li>Item2</li></ol>",
-            sample: "<h1>Menu</h1><ol><li>Item1</li><li>Item2</li></ol>"
+            answer: "<h1>Menu</h1><ol><li>Item1</li><li>Item2</li></ol>"
           }
         ]
       }
@@ -537,9 +557,10 @@
     let currentSlideIndex = 0;
     let totalScore = 0;
     let slideCleared = false;
+    let currentTab = "slide";
 
     function saveKey() {
-      return `progate-v2-${currentChapterId}`;
+      return `progate-v3-${currentChapterId}`;
     }
 
     function normalizeCode(code) {
@@ -548,6 +569,14 @@
         .trim()
         .replace(/\s+/g, " ")
         .replace(/>\s+</g, "><");
+    }
+
+    function showTab(tab) {
+      currentTab = tab;
+      $(".tab").removeClass("active");
+      $(`.tab[data-tab="${tab}"]`).addClass("active");
+      $(".view").removeClass("active");
+      $(`#view-${tab}`).addClass("active");
     }
 
     function loadSavedState() {
@@ -570,19 +599,12 @@
       }));
     }
 
-    function updateHeader() {
-      const totalSlides = chapters[currentChapterId].slides.length;
-      const percent = Math.round(((currentSlideIndex + 1) / totalSlides) * 100);
-      $("#header-percent").text(`${percent}%`);
-      $("#user-name").text("Guest");
-    }
-
     function updateUI() {
       const totalSlides = chapters[currentChapterId].slides.length;
       $("#step-counter").text(`ステップ ${currentSlideIndex + 1}/${totalSlides}`);
       $("#main-progress").css("width", `${((currentSlideIndex + 1) / totalSlides) * 100}%`);
       $("#score-display").text(`スコア: ${totalScore}`);
-      updateHeader();
+      $("#header-percent").text(`${Math.round(((currentSlideIndex + 1) / totalSlides) * 100)}%`);
     }
 
     function renderSlide() {
@@ -593,10 +615,17 @@
       $("#slide-code").text(slide.code);
       $("#challenge-box").html(`<strong>チャレンジ:</strong><br>上のコードをそのまま入力して、正解を目指そう。`);
       $("#hints-list").html(slide.hint.replace(/\n/g, "<br>"));
-      $("#code-editor").val("");
       $("#next-slide").prop("disabled", true);
       slideCleared = false;
-      $("#preview-frame").attr("srcdoc", "<!doctype html><html><body style='font-family:sans-serif;padding:24px;color:#94a3b8;'>コードを入力して実行してください</body></html>");
+      $("#terminal-output").html([
+        `<div class="terminal-line"><span class="terminal-prompt">guest@codespace</span>:~$ npm start</div>`,
+        `<div class="terminal-line">> learning platform started on port 3000</div>`,
+        `<div class="terminal-line">> 現在のスライド: ${slide.title}</div>`
+      ].join(""));
+      $("#preview-frame").attr(
+        "srcdoc",
+        `<!doctype html><html><body style="font-family:sans-serif;padding:24px;color:#94a3b8;">プレビューはコード実行後に表示されます</body></html>`
+      );
     }
 
     function openResult(success, message, diffHtml = "") {
@@ -646,7 +675,6 @@
       const slide = chapters[currentChapterId].slides[currentSlideIndex];
       const userCode = $("#code-editor").val();
       const ok = normalizeCode(userCode) === normalizeCode(slide.answer);
-
       updatePreview();
 
       if (ok) {
@@ -655,11 +683,18 @@
         $("#next-slide").prop("disabled", false);
         updateUI();
         openResult(true, "素晴らしいです。次のスライドへ進めます。");
-        autoSave();
+        $("#terminal-output").append(`
+          <div class="terminal-line"><span class="terminal-prompt">guest@codespace</span>:~$ ✔ 採点成功</div>
+          <div class="terminal-line">> 正解です。次へ進めます。</div>
+        `);
       } else {
         openResult(false, "どこかに間違いがあります。タグ名、閉じタグ、文字列を確認してください。", getDiffDisplay(userCode, slide.answer));
-        autoSave();
+        $("#terminal-output").append(`
+          <div class="terminal-line"><span class="terminal-prompt">guest@codespace</span>:~$ ✖ 採点失敗</div>
+          <div class="terminal-line">> 間違いがあります。コードを確認してください。</div>
+        `);
       }
+      autoSave();
     }
 
     function nextSlide() {
@@ -675,6 +710,7 @@
       renderSlide();
       updateUI();
       autoSave();
+      showTab("slide");
     }
 
     function loadChapter(chapterId) {
@@ -684,13 +720,18 @@
       renderSlide();
       updateUI();
       autoSave();
+      showTab("slide");
     }
 
     $(document).ready(function() {
       loadSavedState();
       renderSlide();
       updateUI();
-      updatePreview();
+
+      $(".tab").on("click", function() {
+        showTab($(this).data("tab"));
+      });
+
       $(".course-card").on("click", function() {
         $(".course-card").removeClass("active");
         $(this).addClass("active");
@@ -702,23 +743,23 @@
         autoSave();
       });
 
-      $("#run-code").on("click", function() {
-        checkAnswer();
-      });
-
-      $("#next-slide").on("click", function() {
-        nextSlide();
-      });
+      $("#run-code").on("click", checkAnswer);
+      $("#next-slide").on("click", nextSlide);
 
       $("#show-answer").on("click", function() {
         const slide = chapters[currentChapterId].slides[currentSlideIndex];
         $("#code-editor").val(slide.answer);
         updatePreview();
         autoSave();
+        showTab("code");
       });
 
       $("#save-progress").on("click", function() {
         autoSave();
+        $("#terminal-output").append(`
+          <div class="terminal-line"><span class="terminal-prompt">guest@codespace</span>:~$ ✓ save</div>
+          <div class="terminal-line">> 自動保存しました。</div>
+        `);
         alert("自動保存しました。");
       });
 
@@ -730,14 +771,11 @@
       $("#overlay").on("click", closeResult);
 
       $(document).on("keydown", function(e) {
-        if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-          checkAnswer();
-        }
-        if (e.key === "Escape") {
-          closeResult();
-        }
+        if ((e.ctrlKey || e.metaKey) && e.key === "Enter") checkAnswer();
+        if (e.key === "Escape") closeResult();
       });
 
+      updatePreview();
       autoSave();
     });
   </script>
