@@ -6,27 +6,19 @@
   <title>Progateクローン v3.0</title>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --header-h: 60px;
       --sidebar-w: 260px;
       --right-w: 310px;
       --bg: #f4f7fb;
-      --card: #ffffff;
       --line: #e5e7eb;
       --primary: #6366f1;
       --primary2: #8b5cf6;
       --green: #10b981;
       --green2: #059669;
       --text: #1f2937;
-      --muted: #6b7280;
     }
-
     html, body {
       height: 100%;
       overflow: hidden;
@@ -34,7 +26,6 @@
       background: var(--bg);
       color: var(--text);
     }
-
     #header {
       height: var(--header-h);
       display: flex;
@@ -45,7 +36,6 @@
       color: #fff;
       box-shadow: 0 4px 18px rgba(99, 102, 241, 0.25);
     }
-
     #logo {
       font-size: 22px;
       font-weight: 800;
@@ -54,7 +44,6 @@
       align-items: center;
       white-space: nowrap;
     }
-
     #header-right {
       display: flex;
       align-items: center;
@@ -62,7 +51,6 @@
       white-space: nowrap;
       font-size: 14px;
     }
-
     #logout {
       border: 0;
       background: rgba(255,255,255,.18);
@@ -72,13 +60,11 @@
       cursor: pointer;
       font-weight: 700;
     }
-
     #app {
       height: calc(100vh - var(--header-h));
       display: flex;
       min-height: 0;
     }
-
     #sidebar {
       width: var(--sidebar-w);
       background: #fff;
@@ -86,35 +72,27 @@
       overflow-y: auto;
       flex-shrink: 0;
     }
-
     .course-card {
       padding: 18px 16px;
       border-bottom: 1px solid #f1f5f9;
       cursor: pointer;
     }
-
-    .course-card:hover {
-      background: #f8fafc;
-    }
-
+    .course-card:hover { background: #f8fafc; }
     .course-card.active {
       background: linear-gradient(135deg, var(--primary), var(--primary2));
       color: #fff;
     }
-
     .course-title {
       font-size: 16px;
       font-weight: 800;
       margin-bottom: 8px;
     }
-
     .course-progress {
       display: flex;
       align-items: center;
       gap: 8px;
       font-size: 13px;
     }
-
     .dot {
       width: 8px;
       height: 8px;
@@ -122,7 +100,6 @@
       background: var(--green);
       flex-shrink: 0;
     }
-
     #center {
       flex: 1;
       min-width: 0;
@@ -130,7 +107,6 @@
       flex-direction: column;
       overflow: hidden;
     }
-
     #tabs {
       height: 50px;
       display: flex;
@@ -141,7 +117,6 @@
       border-bottom: 1px solid var(--line);
       flex-shrink: 0;
     }
-
     .tab {
       border: 1px solid transparent;
       background: #f8fafc;
@@ -151,13 +126,11 @@
       font-weight: 700;
       cursor: pointer;
     }
-
     .tab.active {
       background: linear-gradient(135deg, var(--primary), var(--primary2));
       color: #fff;
       box-shadow: 0 8px 18px rgba(99, 102, 241, .22);
     }
-
     #content-wrap {
       flex: 1;
       min-height: 0;
@@ -165,7 +138,6 @@
       display: flex;
       flex-direction: column;
     }
-
     .view {
       display: none;
       flex: 1;
@@ -173,11 +145,7 @@
       overflow: auto;
       padding: 18px;
     }
-
-    .view.active {
-      display: block;
-    }
-
+    .view.active { display: block; }
     .card {
       max-width: 920px;
       margin: 0 auto;
@@ -187,31 +155,26 @@
       box-shadow: 0 10px 34px rgba(15,23,42,.08);
       padding: 26px;
     }
-
     .slide-top {
       display: flex;
       gap: 14px;
       align-items: flex-start;
       margin-bottom: 18px;
     }
-
     .slide-icon {
       font-size: 44px;
       flex-shrink: 0;
     }
-
     .slide-title {
       font-size: 24px;
       font-weight: 900;
       margin-bottom: 8px;
     }
-
     .slide-text {
       line-height: 1.8;
       color: #334155;
       font-size: 16px;
     }
-
     .slide-code {
       margin-top: 18px;
       background: #0f172a;
@@ -223,7 +186,6 @@
       line-height: 1.7;
       overflow-x: auto;
     }
-
     .challenge-box {
       margin-top: 18px;
       background: linear-gradient(135deg, #ecfdf5, #d1fae5);
@@ -232,7 +194,6 @@
       padding: 14px 16px;
       line-height: 1.8;
     }
-
     #code-editor {
       width: 100%;
       height: 220px;
@@ -246,12 +207,10 @@
       background: #fff;
       outline: none;
     }
-
     #code-editor:focus {
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(99,102,241,.12);
     }
-
     .buttons {
       display: flex;
       flex-wrap: wrap;
@@ -259,7 +218,6 @@
       margin-top: 12px;
       margin-bottom: 14px;
     }
-
     .btn {
       border: 0;
       border-radius: 999px;
@@ -270,21 +228,17 @@
       background: linear-gradient(135deg, var(--green), var(--green2));
       box-shadow: 0 8px 18px rgba(16,185,129,.24);
     }
-
     .btn.secondary {
       background: linear-gradient(135deg, #60a5fa, #2563eb);
     }
-
     .btn.gray {
       background: linear-gradient(135deg, #94a3b8, #64748b);
     }
-
     .btn:disabled {
       opacity: .55;
       cursor: not-allowed;
       box-shadow: none;
     }
-
     #preview-frame {
       width: 100%;
       height: 320px;
@@ -293,7 +247,6 @@
       background: #fff;
       box-shadow: 0 8px 26px rgba(15,23,42,.10);
     }
-
     .terminal {
       background: #0b1220;
       color: #d1d5db;
@@ -305,15 +258,8 @@
       white-space: pre-wrap;
       line-height: 1.8;
     }
-
-    .terminal-line {
-      margin-bottom: 8px;
-    }
-
-    .terminal-prompt {
-      color: #4ade80;
-    }
-
+    .terminal-line { margin-bottom: 8px; }
+    .terminal-prompt { color: #4ade80; }
     #right {
       width: var(--right-w);
       background: #fff;
@@ -321,12 +267,10 @@
       overflow-y: auto;
       flex-shrink: 0;
     }
-
     .panel {
       padding: 20px 16px;
       border-bottom: 1px solid #f1f5f9;
     }
-
     .panel h3 {
       font-size: 18px;
       display: flex;
@@ -334,7 +278,6 @@
       align-items: center;
       margin-bottom: 14px;
     }
-
     .progress-bar {
       width: 100%;
       height: 10px;
@@ -343,14 +286,12 @@
       overflow: hidden;
       margin: 12px 0 10px;
     }
-
     .progress-fill {
       width: 0%;
       height: 100%;
       background: linear-gradient(90deg, var(--green), #34d399);
       transition: width .25s ease;
     }
-
     .hint-box {
       background: linear-gradient(135deg, #ecfdf5, #dcfce7);
       border-left: 4px solid var(--green);
@@ -358,7 +299,6 @@
       padding: 14px;
       line-height: 1.8;
     }
-
     .badge {
       display: inline-block;
       margin-top: 10px;
@@ -368,7 +308,6 @@
       font-weight: 800;
       background: linear-gradient(135deg, #2563eb, #3b82f6);
     }
-
     #overlay {
       position: fixed;
       inset: 0;
@@ -376,7 +315,6 @@
       display: none;
       z-index: 90;
     }
-
     #result-popup {
       position: fixed;
       left: 50%;
@@ -390,15 +328,12 @@
       z-index: 100;
       padding: 26px;
     }
-
     #result-popup.success { border: 2px solid #34d399; }
     #result-popup.error { border: 2px solid #f87171; }
-
     #result-icon {
       font-size: 54px;
       margin-bottom: 10px;
     }
-
     #result-diff {
       margin-top: 14px;
       background: #fef2f2;
@@ -433,11 +368,11 @@
       </div>
       <div class="course-card" data-chapter="2">
         <div class="course-title">🎨 CSS入門</div>
-        <div class="course-progress"><span class="dot" style="opacity:.3;background:#94a3b8;"></span><span>0/3 スライド</span></div>
+        <div class="course-progress"><span class="dot" style="opacity:.3;background:#94a3b8;"></span><span>3/3 スライド</span></div>
       </div>
       <div class="course-card" data-chapter="3">
         <div class="course-title">⚡ JavaScript</div>
-        <div class="course-progress"><span class="dot" style="opacity:.3;background:#94a3b8;"></span><span>0/3 スライド</span></div>
+        <div class="course-progress"><span class="dot" style="opacity:.3;background:#94a3b8;"></span><span>3/3 スライド</span></div>
       </div>
     </div>
 
@@ -525,30 +460,23 @@
     const chapters = {
       1: {
         slides: [
-          {
-            icon: "📘",
-            title: "見出しを作る",
-            text: "スライドを読んで、コードを正確に入力してください。",
-            code: "<h1>Hello World</h1>",
-            hint: "・h1タグを使う\n・文字は Hello World\n・余計な空白を入れない",
-            answer: "<h1>Hello World</h1>"
-          },
-          {
-            icon: "✍️",
-            title: "段落を追加する",
-            text: "見出しの下に段落を追加します。",
-            code: "<h1>Hello World</h1><p>First step!</p>",
-            hint: "・h1はそのまま\n・pタグで段落を追加\n・文字を正確に書く",
-            answer: "<h1>Hello World</h1><p>First step!</p>"
-          },
-          {
-            icon: "🎨",
-            title: "リストを作る",
-            text: "順序付きリストを作ります。",
-            code: "<h1>Menu</h1><ol><li>Item1</li><li>Item2</li></ol>",
-            hint: "・olタグを使う\n・liを2つ書く\n・タグを正しく閉じる",
-            answer: "<h1>Menu</h1><ol><li>Item1</li><li>Item2</li></ol>"
-          }
+          { icon: "📘", title: "見出しを作る", text: "HTMLの基本です。", code: "<h1>Hello World</h1>", hint: "・h1タグを使う\n・文字は Hello World\n・余計な空白を入れない", answer: "<h1>Hello World</h1>" },
+          { icon: "✍️", title: "段落を追加する", text: "見出しの下に段落を追加します。", code: "<h1>Hello World</h1><p>First step!</p>", hint: "・h1はそのまま\n・pタグで段落を追加\n・文字を正確に書く", answer: "<h1>Hello World</h1><p>First step!</p>" },
+          { icon: "🎨", title: "リストを作る", text: "順序付きリストを作ります。", code: "<h1>Menu</h1><ol><li>Item1</li><li>Item2</li></ol>", hint: "・olタグを使う\n・liを2つ書く\n・タグを正しく閉じる", answer: "<h1>Menu</h1><ol><li>Item1</li><li>Item2</li></ol>" }
+        ]
+      },
+      2: {
+        slides: [
+          { icon: "🎨", title: "文字色を変える", text: "CSSの基本です。", code: "h1 { color: red; }", hint: "・h1を選択\n・colorを使う\n・redにする", answer: "h1 { color: red; }" },
+          { icon: "🖼️", title: "背景色をつける", text: "背景色を指定します。", code: "body { background: blue; }", hint: "・bodyを選択\n・backgroundを使う\n・blueにする", answer: "body { background: blue; }" },
+          { icon: "📦", title: "余白をつける", text: "margin を使います。", code: "p { margin: 20px; }", hint: "・pを選択\n・marginを使う\n・20pxを指定", answer: "p { margin: 20px; }" }
+        ]
+      },
+      3: {
+        slides: [
+          { icon: "⚡", title: "consoleを使う", text: "JavaScriptの基本です。", code: "console.log('Hello');", hint: "・console.logを使う\n・Helloを出力\n・シングルクォート", answer: "console.log('Hello');" },
+          { icon: "🔁", title: "変数を作る", text: "let を使います。", code: "let name = 'Taro';", hint: "・letを使う\n・nameという変数\n・Taroを代入", answer: "let name = 'Taro';" },
+          { icon: "🖱️", title: "クリック処理", text: "ボタンを押したら動く処理です。", code: "$('button').on('click', function() { alert('clicked'); });", hint: "・onを使う\n・clickイベント\n・alertを出す", answer: "$('button').on('click', function() { alert('clicked'); });" }
         ]
       }
     };
@@ -557,7 +485,6 @@
     let currentSlideIndex = 0;
     let totalScore = 0;
     let slideCleared = false;
-    let currentTab = "slide";
 
     function saveKey() {
       return `progate-v3-${currentChapterId}`;
@@ -569,14 +496,6 @@
         .trim()
         .replace(/\s+/g, " ")
         .replace(/>\s+</g, "><");
-    }
-
-    function showTab(tab) {
-      currentTab = tab;
-      $(".tab").removeClass("active");
-      $(`.tab[data-tab="${tab}"]`).addClass("active");
-      $(".view").removeClass("active");
-      $(`#view-${tab}`).addClass("active");
     }
 
     function loadSavedState() {
@@ -599,6 +518,13 @@
       }));
     }
 
+    function showTab(tab) {
+      $(".tab").removeClass("active");
+      $(`.tab[data-tab="${tab}"]`).addClass("active");
+      $(".view").removeClass("active");
+      $(`#view-${tab}`).addClass("active");
+    }
+
     function updateUI() {
       const totalSlides = chapters[currentChapterId].slides.length;
       $("#step-counter").text(`ステップ ${currentSlideIndex + 1}/${totalSlides}`);
@@ -617,15 +543,29 @@
       $("#hints-list").html(slide.hint.replace(/\n/g, "<br>"));
       $("#next-slide").prop("disabled", true);
       slideCleared = false;
-      $("#terminal-output").html([
-        `<div class="terminal-line"><span class="terminal-prompt">guest@codespace</span>:~$ npm start</div>`,
-        `<div class="terminal-line">> learning platform started on port 3000</div>`,
-        `<div class="terminal-line">> 現在のスライド: ${slide.title}</div>`
-      ].join(""));
-      $("#preview-frame").attr(
-        "srcdoc",
-        `<!doctype html><html><body style="font-family:sans-serif;padding:24px;color:#94a3b8;">プレビューはコード実行後に表示されます</body></html>`
-      );
+      $("#terminal-output").html(`
+        <div class="terminal-line"><span class="terminal-prompt">guest@codespace</span>:~$ npm start</div>
+        <div class="terminal-line">> learning platform started on port 3000</div>
+        <div class="terminal-line">> 現在のスライド: ${slide.title}</div>
+      `);
+      $("#preview-frame").attr("srcdoc", "<!doctype html><html><body style='font-family:sans-serif;padding:24px;color:#94a3b8;'>プレビューはコード実行後に表示されます</body></html>");
+    }
+
+    function getDiffDisplay(user, correct) {
+      const u = String(user || "").split("\n");
+      const c = String(correct || "").split("\n");
+      let html = "";
+      const max = Math.max(u.length, c.length);
+      for (let i = 0; i < max; i++) {
+        const uu = u[i] ?? "";
+        const cc = c[i] ?? "";
+        if (uu.trim() !== cc.trim()) {
+          html += `<div style="background:#fff1f2;color:#9f1239;padding:8px 10px;border-radius:8px;margin-bottom:8px;">${uu || "[行がありません]"}</div>`;
+        } else {
+          html += `<div style="background:#f0fdf4;color:#166534;padding:8px 10px;border-radius:8px;margin-bottom:8px;">${uu}</div>`;
+        }
+      }
+      return html;
     }
 
     function openResult(success, message, diffHtml = "") {
@@ -654,23 +594,6 @@
       );
     }
 
-    function getDiffDisplay(user, correct) {
-      const u = String(user || "").split("\n");
-      const c = String(correct || "").split("\n");
-      let html = "";
-      const max = Math.max(u.length, c.length);
-      for (let i = 0; i < max; i++) {
-        const uu = u[i] ?? "";
-        const cc = c[i] ?? "";
-        if (uu.trim() !== cc.trim()) {
-          html += `<div style="background:#fff1f2;color:#9f1239;padding:8px 10px;border-radius:8px;margin-bottom:8px;">${uu || "[行がありません]"}</div>`;
-        } else {
-          html += `<div style="background:#f0fdf4;color:#166534;padding:8px 10px;border-radius:8px;margin-bottom:8px;">${uu}</div>`;
-        }
-      }
-      return html;
-    }
-
     function checkAnswer() {
       const slide = chapters[currentChapterId].slides[currentSlideIndex];
       const userCode = $("#code-editor").val();
@@ -683,16 +606,8 @@
         $("#next-slide").prop("disabled", false);
         updateUI();
         openResult(true, "素晴らしいです。次のスライドへ進めます。");
-        $("#terminal-output").append(`
-          <div class="terminal-line"><span class="terminal-prompt">guest@codespace</span>:~$ ✔ 採点成功</div>
-          <div class="terminal-line">> 正解です。次へ進めます。</div>
-        `);
       } else {
         openResult(false, "どこかに間違いがあります。タグ名、閉じタグ、文字列を確認してください。", getDiffDisplay(userCode, slide.answer));
-        $("#terminal-output").append(`
-          <div class="terminal-line"><span class="terminal-prompt">guest@codespace</span>:~$ ✖ 採点失敗</div>
-          <div class="terminal-line">> 間違いがあります。コードを確認してください。</div>
-        `);
       }
       autoSave();
     }
@@ -717,6 +632,8 @@
       currentChapterId = chapterId;
       currentSlideIndex = 0;
       totalScore = 0;
+      slideCleared = false;
+      $("#code-editor").val("");
       renderSlide();
       updateUI();
       autoSave();
@@ -727,12 +644,13 @@
       loadSavedState();
       renderSlide();
       updateUI();
+      updatePreview();
 
-      $(".tab").on("click", function() {
+      $(document).on("click", ".tab", function() {
         showTab($(this).data("tab"));
       });
 
-      $(".course-card").on("click", function() {
+      $(document).on("click", ".course-card", function() {
         $(".course-card").removeClass("active");
         $(this).addClass("active");
         loadChapter(Number($(this).data("chapter")));
@@ -756,10 +674,6 @@
 
       $("#save-progress").on("click", function() {
         autoSave();
-        $("#terminal-output").append(`
-          <div class="terminal-line"><span class="terminal-prompt">guest@codespace</span>:~$ ✓ save</div>
-          <div class="terminal-line">> 自動保存しました。</div>
-        `);
         alert("自動保存しました。");
       });
 
@@ -775,7 +689,6 @@
         if (e.key === "Escape") closeResult();
       });
 
-      updatePreview();
       autoSave();
     });
   </script>
